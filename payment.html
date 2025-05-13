@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Complete Payment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #111;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    body.light-mode {
+      background: #f9f9f9;
+      color: #000;
+    }
+
+    .container {
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 20px auto;
+      max-width: 500px;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.8s ease forwards;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 10%, transparent 11%);
+      background-size: 30px 30px;
+      z-index: 0;
+    }
+
+    .card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    body.light-mode .card {
+      background: linear-gradient(135deg, #ffffff, #e0e0e0);
+      color: #000;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .account-box {
+      background: #333;
+      padding: 10px 20px;
+      border-radius: 10px;
+      display: inline-block;
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 1.2em;
+      letter-spacing: 1px;
+    }
+
+    body.light-mode .account-box {
+      background: #eee;
+      color: #000;
+    }
+
+    .copy-btn {
+      margin-top: 15px;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 20px;
+      background: linear-gradient(to right, #1abc9c, #16a085);
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .notice {
+      margin-top: 20px;
+      font-style: italic;
+      font-size: 0.9em;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #27ae60;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      display: none;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      background: #444;
+      color: white;
+      font-weight: bold;
+      transition: 0.3s ease;
+      z-index: 1000;
+    }
+
+    body.light-mode .theme-toggle {
+      background: #ccc;
+      color: #000;
+    }
+
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: -1;
+    }
+
+    #confirmPaymentBtn {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 20px;
+      background: #2980b9;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    #confirmPaymentBtn:hover {
+      background: #3498db;
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
+
+  <div class="container">
+    <div class="card">
+      <h2>Complete Your Payment</h2>
+      <p><strong>Plan:</strong> <span id="planName">Loading...</span></p>
+
+      <div class="account-box" id="account">Loading...</div>
+      <button class="copy-btn" onclick="copyAccount()">Copy Account Number</button>
+
+      <button id="confirmPaymentBtn" onclick="window.location.href='https://t.me/YourTelegramUsername'">Click after payment is made with payment receipt</button>
+
+      <p class="notice">After payment, your investment will be verified automatically.</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Account number copied!</div>
+
+  <script>
+    const planAccounts = {
+      "Starter Plan": { number: "6118587867", bank: "opay" },
+      "Bronze Plan": { number: "6118587867", bank: "opay" },
+      "Silver Plan": { number: "6118587867", bank: "opay" },
+      "Gold Plan": { number: "6118587867", bank: "opay" },
+      "Diamond Plan": { number: "6118587867", bank: "opay" }
+    };
+
+    const plan = localStorage.getItem('selectedPlan');
+    const bgColor = localStorage.getItem('planColor');
+    if (plan) {
+      document.getElementById('planName').innerText = plan;
+      const accountInfo = planAccounts[plan] || { number: "6118587867", bank: "opay" };
+      document.getElementById('account').innerText = `${accountInfo.number} - ${accountInfo.bank}`;
+      document.getElementById('account').setAttribute('data-account', accountInfo.number);
+    }
+    if (bgColor) document.body.style.background = bgColor;
+
+    function copyAccount() {
+      const text = document.getElementById('account').getAttribute('data-account');
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.style.display = "block";
+        setTimeout(() => toast.style.display = "none", 2000);
+
+        setTimeout(() => {
+          document.getElementById('confirmPaymentBtn').style.display = 'inline-block';
+        }, 1000);
+      });
+    }
+
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      const toggle = document.getElementById('themeToggle');
+      toggle.textContent = document.body.classList.contains('light-mode') ? '🌙 Dark Mode' : '☀️ Light Mode';
+    });
+
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 60 },
+        color: { value: '#ffffff' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.3 },
+        size: { value: 3 },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: '#ffffff',
+          opacity: 0.2,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 1.2
+        }
+      }
+    });
+  </script>
+</body>
+</html>
