@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registration Page</title>
+  <style>
+    /* Similar styling as login page */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(-45deg, #ff5e62, #ff9966, #1e90ff, #20c997);
+      background-size: 400% 400%;
+      animation: gradientMove 10s ease infinite;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    h1 {
+      color: white;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    .register-form {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      width: 300px;
+      text-align: center;
+    }
+
+    .register-form input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .register-form button {
+      width: 100%;
+      padding: 10px;
+      background-color: #ff5e62;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .register-form button:hover {
+      background-color: #ff9966;
+    }
+
+    .login-link {
+      display: block;
+      margin-top: 15px;
+      color: #ff5e62;
+      text-decoration: none;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Create Your Account</h1>
+
+  <div class="register-form">
+    <form id="registerForm">
+      <input type="email" id="registerEmail" placeholder="Enter your email" required />
+      <input type="password" id="registerPassword" placeholder="Enter your password" required />
+      <button type="submit">Register</button>
+    </form>
+
+    <a href="login.html" class="login-link">Already have an account? Login here</a>
+  </div>
+
+  <script>
+    // Handle the registration form submission
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+
+      // Save the email and password to localStorage
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userPassword', password);
+
+      alert('Registration successful! You can now log in.');
+      
+      // Redirect to login page
+      window.location.href = 'login.html';
+    });
+  </script>
+
+</body>
+</html>
