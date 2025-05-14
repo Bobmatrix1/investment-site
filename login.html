@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,7 +88,7 @@
       <button type="submit">Login</button>
     </form>
 
-    <a href="main.html" class="register-link">Don't have an account? Register here</a>
+    <a href="registration.html" class="register-link">Don't have an account? Register here</a>
   </div>
 
   <script>
@@ -107,7 +108,7 @@
 
       if (email === storedEmail && password === storedPassword) {
         console.log('Login successful! Redirecting...'); // Debugging line
-        window.location.href = 'index.html'; // Make sure this path is correct
+        window.location.href = 'main.html'; // Make sure this path is correct
       } else {
         console.log('Invalid email or password. Please try again.'); // Debugging line
         alert('Invalid email or password. Please try again.');
